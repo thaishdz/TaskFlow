@@ -1,3 +1,4 @@
+import { Button } from "./components/ui/Button"
 import { Card } from "./components/ui/Card"
 
 function App() {
@@ -10,6 +11,9 @@ function App() {
             <Card key={index} />
           ))
         }
+      </div>
+      <div className="flex justify-end border">
+        <Button />
       </div>
     </>
   )
