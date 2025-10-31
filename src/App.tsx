@@ -3,10 +3,13 @@ import { Card } from "./components/ui/Card"
 function App() {
   return (
     <>
-      <h1 className="text-4xl font-thin text-center">My Task Board</h1>
+      <h1 className="text-4xl font-thin text-center mt-35">My Task Board</h1>
       <div>
-        <Card />
-        <Card />
+        {
+          Array.from({length: 4}).map((_, index) => (
+            <Card key={index} />
+          ))
+        }
       </div>
     </>
   )
