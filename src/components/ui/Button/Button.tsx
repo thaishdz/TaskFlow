@@ -1,27 +1,31 @@
 import { type ReactNode } from "react";
 
-
-type ButtonType = 'add'
+type ButtonType = 'add' // here: considera usar union types para añadir más
 
 const buttonConfig: Record<ButtonType, {styles: string, icon?: string }> = {
     add: {
-        styles: 'bg-blue-500 hover:bg-blue-600 text-white rounded-full',
+        styles: 'bg-yellow-500 hover:bg-yellow-600 text-black rounded-full',
         icon: '➕'
-    },
-    // primary: {...}
-}
-interface ButtonProps {
-    type?: ButtonType;
-    children?: ReactNode; // Contenido del botón (text, icons, etc.)
-    className?: string;
+    }
 }
 
-export const Button = ({type = 'add', className, children}: ButtonProps) => {
+interface ButtonProps {
+    type?: ButtonType;
+    children?: ReactNode; // here: contenido del botón (text, icons, etc.)
+    className?: string;
+    onClick: () => void; // here: debe ser genérico porque aplicará a todos los botones
+}
+
+export const Button = ({type = 'add', className, children, onClick}: ButtonProps) => {
     const config = buttonConfig[type]
+    const baseStyles = 'px-4 py-2 cursor-pointer transition-colors'
     return (
-        <button className={`${config.styles} ${className || ''}px-4 py-2`}>
-            {config.icon && <span>{config.icon}</span>}
-            {children}
+        // className= {base | tipo | overrides}
+        <button 
+            className={`${baseStyles} ${config.styles} ${className || ''}`.trim()} 
+            onClick={onClick}
+        >
+            {config.icon}{children}
         </button>
     )
 }
