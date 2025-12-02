@@ -2,8 +2,7 @@ import { useState } from "react"
 import { Button } from "./components/ui/Button"
 import { Card } from "./components/ui/Card"
 import { Dialog } from "./components/ui/Dialog"
-
-
+import { TaskListForm } from "./components/ui/Form"
 
 function App() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -30,7 +29,7 @@ function App() {
         </div>
       </div>
       <Dialog visible={isDialogOpen} onClose={closeDialog} >
-        <p>Aquí irá el formulario</p>
+        <TaskListForm />
       </Dialog>
     </>
   )

@@ -1,10 +1,12 @@
 
+export type EmojiName = 'travel' | 'chores' | 'personal'
+
 interface EmojiProps {
-    name: 'travel' | 'chores' | 'personal',
+    name: EmojiName,
     className?: string
 }
 export const Emoji = ({name, className = '' }: EmojiProps) => {
-    const emojis = {
+    const emojis: Record<EmojiName, string> = {
         travel: '🌎',
         chores : '🏠',
         personal: '🎯'

@@ -1,2 +1,2 @@
-import { Emoji } from './Emoji'
-export { Emoji }
+import { Emoji, type EmojiName } from './Emoji'
+export { Emoji, type EmojiName }
