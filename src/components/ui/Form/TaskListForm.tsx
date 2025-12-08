@@ -1,16 +1,49 @@
 import { useState } from "react"
-import { type EmojiName, Emoji} from "../Emoji"
+import { type EmojiName, Emoji } from "../Emoji"
 import { Button } from "../Button";
+import { useForm } from "react-hook-form";
 
 
-const createList = () => {
-    console.log('createList called!')
+export interface TaskListData {
+    title: string;
+    icon: EmojiName;
+    tasks: string[];
 }
 
-export const TaskListForm = () => {
-    const [title, setTitle] = useState<string>('')
-    const [icon, setIcon] = useState<EmojiName | undefined>(undefined)
+interface TaskListFormProps {
+    onSubmit: (data: TaskListData) => void
+}
+
+export const TaskListForm = ({onSubmit}: TaskListFormProps) => {
     const [tasks, setTasks] = useState<string[]>([])
+    const [newTaskInput, setNewTaskInput] = useState<string>('')
+
+    const { register, setValue, watch } = useForm<TaskListData>({
+        defaultValues: {title: ''}
+    });
+
+    const handleAddTask = () => {
+        setTasks([...tasks, newTaskInput])
+        setNewTaskInput('')
+    }
+    
+    const selectedIcon = watch("icon");
+
+    const handleCreateList = () => {
+        const title = watch("title")
+
+        if(!title || !selectedIcon){
+            alert("List should have a title and an icon")
+            return
+        }
+
+        // se lo empaqueto al padre para mostrarlos, guardarlos,... (callback props)
+        onSubmit({
+            title: title, 
+            icon: selectedIcon, 
+            tasks: tasks
+        });
+    }
 
     const emojiOptions: EmojiName[] = ['travel', 'chores', 'personal'];
 
@@ -21,8 +54,7 @@ export const TaskListForm = () => {
             <input 
                 type="text" 
                 id="title"
-                value={title} 
-                onChange={(e) => setTitle(e.target.value)} 
+                {...register("title")} // encapsula name, onchange, onblur, ref ...
                 placeholder="e.g., My Awesome List"
                 className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none 
                     focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors
@@ -35,10 +67,20 @@ export const TaskListForm = () => {
                 {
                     emojiOptions.map((name) => (
                         <button 
-                            key={name} onClick={() => setIcon(name)}
-                            className="bg-gray-200 p-4 px-5 rounded-xl hover:bg-yellow-500 cursor-pointer shadow-lg"
+                            type="button"
+                            key={name} 
+                            onClick={() => setValue("icon", name)}
+                            className={
+                                `bg-gray-200 p-4 px-5 rounded-xl cursor-pointer shadow-lg
+                                ${selectedIcon === name
+                                    ? 'bg-yellow-500'
+                                    : 'hover:bg-yellow-500'
+                                }
+                            `}
                         >
+                        <div className="scale-150">
                             <Emoji name={name} />
+                        </div>
                         </button>
                     ))
                 } 
@@ -48,17 +90,28 @@ export const TaskListForm = () => {
                 <input 
                     type="text" 
                     id="task" 
-                    value={tasks}
+                    value={newTaskInput}
                     placeholder="e.g., Play Expedition 33" 
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e) => setNewTaskInput(e.target.value)}
                     className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none 
                         focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors
                         placeholder:text-gray-400
                     "
                  />
-                <Button type="add" onClick={() => console.log('clicked')} />
+                <Button type="add" onClick={handleAddTask} />
             </div>
-            <Button type="add" onClick={createList}>Create List</Button>
+            {tasks.length > 0 && (
+                <ul className="flex flex-col ml-1">
+                    {tasks.map((task, index) => (
+                        <i>
+                            <li key={index}className="text-gray-700">
+                                {task}
+                            </li>
+                        </i>
+                    ))}
+                </ul>
+            )}
+            <Button type="add" onClick={handleCreateList}>Create List</Button>
         </form>
     )
 }

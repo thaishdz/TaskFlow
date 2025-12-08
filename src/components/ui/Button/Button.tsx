@@ -2,10 +2,11 @@ import { type ReactNode } from "react";
 
 type ButtonType = 'add' // here: considera usar union types para añadir más
 
-const buttonConfig: Record<ButtonType, {styles: string, icon?: string }> = {
+const buttonConfig: Record<ButtonType, {styles: string, icon?: string, showIcon?: boolean }> = {
     add: {
         styles: 'bg-yellow-500 hover:bg-yellow-600 text-black rounded-full',
-        icon: '➕'
+        icon: '➕',
+        showIcon: true
     }
 }
 
@@ -22,10 +23,11 @@ export const Button = ({type = 'add', className, children, onClick}: ButtonProps
     return (
         // className= {base | tipo | overrides}
         <button 
+            type="button"
             className={`${baseStyles} ${config.styles} ${className || ''}`.trim()} 
             onClick={onClick}
         >
-            {config.icon}{children}
+            {!children && config.icon}{children}
         </button>
     )
 }
