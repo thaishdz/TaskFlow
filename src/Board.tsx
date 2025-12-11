@@ -4,10 +4,11 @@ import { Card } from "./components/ui/Card"
 import { Dialog } from "./components/ui/Dialog"
 import { TaskListForm } from "./components/ui/Form"
 import type { TaskListData } from "./components/ui/Form/TaskListForm"
+import { useLocalStorage } from "./hooks/useLocalStorage"
 
 function Board() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [taskLists, setTaskList] = useState<TaskListData[]>([])
+  const [taskLists, setTaskList] = useLocalStorage<TaskListData[]>('my-task-lists', [])
   
   const openDialog = () => setIsDialogOpen(true)
   const closeDialog = () => setIsDialogOpen(false)
@@ -31,8 +32,8 @@ function Board() {
           </Button>
         <div className="pt-16">
         {
-          taskLists.map((list, index) => (
-            <Card title={list.title} icon={list.icon} key={index} />
+          taskLists.map((list: TaskListData) => (
+            <Card title={list.title} icon={list.icon} key={list.id} />
           ))
         }
         </div>

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 
 export interface TaskListData {
+    id: string;
     title: string;
     icon: EmojiName;
     tasks: string[];
@@ -29,7 +30,7 @@ export const TaskListForm = ({onSubmit}: TaskListFormProps) => {
     
     const selectedIcon = watch("icon");
 
-    const handleCreateList = () => {
+    const handleCreateListCTA = () => {
         const title = watch("title")
 
         if(!title || !selectedIcon){
@@ -39,6 +40,7 @@ export const TaskListForm = ({onSubmit}: TaskListFormProps) => {
 
         // se lo empaqueto al padre para mostrarlos, guardarlos,... (callback props)
         onSubmit({
+            id: crypto.randomUUID(),
             title: title, 
             icon: selectedIcon, 
             tasks: tasks
@@ -111,7 +113,7 @@ export const TaskListForm = ({onSubmit}: TaskListFormProps) => {
                     ))}
                 </ul>
             )}
-            <Button type="add" onClick={handleCreateList}>Create List</Button>
+            <Button type="add" onClick={handleCreateListCTA}>Create List</Button>
         </form>
     )
 }
