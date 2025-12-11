@@ -17,7 +17,7 @@ export const Card = ({
   onToggle,
 }: CardProps) => {
   return (
-    <div className="w-1/2 mx-auto rounded-xl bg-yellow-200 m-6 p-4 shadow-lg">
+    <div className="w-full max-w-xl mx-auto rounded-xl bg-yellow-200 m-6 p-4 shadow-lg md:w-1/2">
       <button
         type="button"
         onClick={onToggle}
@@ -47,11 +47,17 @@ export const Card = ({
       {tasks && isExpanded && (
         <div className="mt-2 rounded-xl bg-white p-4 shadow-lg">
           <ul>
-            {tasks.map(task => (
-              <li className="text-gray-700" key={task.id}>
-                {task.name}
-              </li>
-            ))}
+            {tasks.length === 0 ? (
+              <span>
+                <i>No tasks</i>
+              </span>
+            ) : (
+              tasks.map(task => (
+                <li className="text-gray-800" key={task.id}>
+                  {task.name}
+                </li>
+              ))
+            )}
           </ul>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { type EmojiName, Emoji } from '../Emoji'
 import { Button } from '../Button'
 import { useForm } from 'react-hook-form'
@@ -23,9 +23,20 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
   const [tasks, setTasks] = useState<Task[]>([])
   const [newTaskNameInput, setNewTaskNameInput] = useState<string>('')
 
-  const { register, setValue, watch } = useForm<TaskListData>({
+  const {
+    register,
+    setValue,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TaskListData>({
     defaultValues: { title: '' },
+    mode: 'onChange',
   })
+
+  useEffect(() => {
+    register('icon', { required: 'Please select an icon' })
+  }, [register])
 
   const handleAddTask = () => {
     if (!newTaskNameInput.trim()) return
@@ -42,25 +53,17 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
   }
 
   const selectedIcon = watch('icon')
+  const emojiOptions: EmojiName[] = ['travel', 'chores', 'personal']
 
-  const handleCreateListCTA = () => {
-    const title = watch('title')
-
-    if (!title || !selectedIcon) {
-      alert('List should have a title and an icon')
-      return
-    }
-
+  const onSubmitForm = handleSubmit(data => {
     // se lo empaqueto al padre para mostrarlos, guardarlos,... (callback props)
     onSubmit({
       id: crypto.randomUUID(),
-      title: title,
-      icon: selectedIcon,
+      title: data.title,
+      icon: data.icon,
       tasks: tasks,
     })
-  }
-
-  const emojiOptions: EmojiName[] = ['travel', 'chores', 'personal']
+  })
 
   return (
     <form className="flex flex-col gap-6 w-full">
@@ -71,13 +74,32 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
       <input
         type="text"
         id="title"
-        {...register('title')} // encapsula name, onchange, onblur, ref ...
+        {...register(
+          'title', // encapsula name, onchange, onblur, ref ...
+          {
+            required: 'Title is required',
+            maxLength: {
+              value: 35,
+              message: 'Title cannot exceed 35 characters',
+            },
+          }
+        )}
         placeholder="e.g., My Awesome List"
-        className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none 
-                    focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors
-                    placeholder:text-gray-400
-                "
+        className={`
+          w-full px-3 py-3 border rounded-lg 
+          focus:outline-none focus:ring-2 
+          transition-colors placeholder:text-gray-400
+          ${
+            errors.title
+              ? 'border-red-500 focus:ring-red-500'
+              : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+          }
+        `}
       />
+
+      {errors.title && (
+        <p className="text-red-500 text-sm -mt-4">{errors.title.message}</p>
+      )}
 
       <label className="text-sm font-medium text-gray-500" htmlFor="icon">
         Icon
@@ -102,6 +124,9 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
           </button>
         ))}
       </div>
+      {errors.icon && (
+        <p className="text-red-500 text-sm -mt-4">{errors.icon.message}</p>
+      )}
       <label className="text-sm font-medium text-gray-500" htmlFor="tasks">
         Tasks
       </label>
@@ -122,15 +147,13 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
       {tasks.length > 0 && (
         <ul className="flex flex-col ml-1">
           {tasks.map(task => (
-            <i>
-              <li key={task.id} className="text-gray-700">
-                {task.name}
-              </li>
-            </i>
+            <li key={task.id} className="text-gray-700">
+              <i>{task.name}</i>
+            </li>
           ))}
         </ul>
       )}
-      <Button type="add" onClick={handleCreateListCTA}>
+      <Button type="add" onClick={onSubmitForm}>
         Create List
       </Button>
     </form>
