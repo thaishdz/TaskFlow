@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button } from './components/ui/Button'
 import { Dialog } from './components/ui/Dialog'
 import { TaskListForm } from './components/ui/Form'
-import type { TaskListData } from './components/ui/Form/TaskListForm'
+import type { Task, TaskListData } from './components/ui/Form/TaskListForm'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { CardList } from './components/ui/Card/CardList'
 
@@ -21,6 +21,27 @@ function Board() {
     closeDialog()
   }
 
+  const toggleTaskCompletion = (taskId: string, tasks: Task[]) => {
+    return tasks.map(taskItem => {
+      return taskId === taskItem.id
+        ? { ...taskItem, completed: !taskItem.completed }
+        : taskItem
+    })
+  }
+
+  const handleToggleItem = (taskId: string, listId: string) => {
+    setTaskList((prevLists: TaskListData[]) =>
+      prevLists.map(list => {
+        if (list.id !== listId) return list
+
+        return {
+          ...list,
+          tasks: toggleTaskCompletion(taskId, list.tasks),
+        }
+      })
+    )
+  }
+
   return (
     <>
       <h1 className="text-4xl font-thin text-center mt-20">Board</h1>
@@ -32,7 +53,7 @@ function Board() {
           Add list
         </Button>
         <div className="pt-16">
-          <CardList taskLists={taskLists} />
+          <CardList onToggleItem={handleToggleItem} lists={taskLists} />
         </div>
       </div>
       <Dialog visible={isDialogOpen} onClose={closeDialog}>

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 export interface Task {
   id: string
   name: string
+  completed: boolean
 }
 
 export interface TaskListData {
@@ -46,6 +47,7 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
       {
         id: crypto.randomUUID(),
         name: newTaskNameInput,
+        completed: false,
       },
     ])
 
@@ -79,8 +81,8 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
           {
             required: 'Title is required',
             maxLength: {
-              value: 35,
-              message: 'Title cannot exceed 35 characters',
+              value: 25,
+              message: 'Title cannot exceed 25 characters',
             },
           }
         )}

@@ -3,27 +3,29 @@ import type { TaskListData } from '../Form/TaskListForm'
 import { Card } from './Card'
 
 interface CardListProps {
-  taskLists: TaskListData[]
+  lists: TaskListData[]
+  onToggleItem: (taskId: string, listId: string) => void
 }
 
-export const CardList = ({ taskLists }: CardListProps) => {
+export const CardList = ({ lists, onToggleItem }: CardListProps) => {
   // guarda el ID de la card expandida actualmente
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
-  const handleToggle = (id: string) =>
+  const handleToggleCard = (id: string) =>
     setExpandedId(expandedId === id ? null : id)
 
   return (
     <div>
-      {taskLists.map(taskList => (
+      {lists.map(list => (
         <Card
-          key={taskList.id}
-          id={taskList.id}
-          title={taskList.title}
-          icon={taskList.icon}
-          tasks={taskList.tasks}
-          isExpanded={expandedId === taskList.id}
-          onToggle={() => handleToggle(taskList.id)}
+          key={list.id}
+          id={list.id}
+          title={list.title}
+          icon={list.icon}
+          tasks={list.tasks}
+          isExpanded={expandedId === list.id}
+          onToggleCard={() => handleToggleCard(list.id)}
+          onToggleItem={taskId => onToggleItem(taskId, list.id)}
         />
       ))}
     </div>
