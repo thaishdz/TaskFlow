@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
 
-type ButtonType = 'add' // here: considera usar union types para añadir más
+type ButtonType = 'add' | 'edit'
 
 const buttonConfig: Record<
   ButtonType,
@@ -9,6 +9,11 @@ const buttonConfig: Record<
   add: {
     styles: 'bg-yellow-500 hover:bg-yellow-600 text-black rounded-full',
     icon: '➕',
+    showIcon: true,
+  },
+  edit: {
+    styles: 'bg-white hover:bg-yellow-200 text-black border rotate-90',
+    icon: '✏️',
     showIcon: true,
   },
 }

@@ -8,6 +8,7 @@ import { CardList } from './components/ui/Card/CardList'
 
 function Board() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   const [taskLists, setTaskList] = useLocalStorage<TaskListData[]>(
     'my-task-lists',
     []
