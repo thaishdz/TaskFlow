@@ -2,45 +2,20 @@ import { useState } from 'react'
 import { Button } from './components/ui/Button'
 import { Dialog } from './components/ui/Dialog'
 import { TaskListForm } from './components/ui/Form'
-import type { Task, TaskListData } from './components/ui/Form/TaskListForm'
-import { useLocalStorage } from './hooks/useLocalStorage'
+import type { TaskListData } from './components/ui/Form/TaskListForm'
 import { CardList } from './components/ui/Card/CardList'
+import { useCards } from './context/CardsProvider'
 
 function Board() {
+  const { lists, addList, toggleTask } = useCards()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-
-  const [taskLists, setTaskList] = useLocalStorage<TaskListData[]>(
-    'my-task-lists',
-    []
-  )
 
   const openDialog = () => setIsDialogOpen(true)
   const closeDialog = () => setIsDialogOpen(false)
 
-  const handleAddList = (newList: TaskListData) => {
-    setTaskList([...taskLists, newList])
+  const handleAddListAndClose = (newList: TaskListData) => {
+    addList(newList)
     closeDialog()
-  }
-
-  const toggleTaskCompletion = (taskId: string, tasks: Task[]) => {
-    return tasks.map(taskItem => {
-      return taskId === taskItem.id
-        ? { ...taskItem, completed: !taskItem.completed }
-        : taskItem
-    })
-  }
-
-  const handleToggleItem = (taskId: string, listId: string) => {
-    setTaskList((prevLists: TaskListData[]) =>
-      prevLists.map(list => {
-        if (list.id !== listId) return list
-
-        return {
-          ...list,
-          tasks: toggleTaskCompletion(taskId, list.tasks),
-        }
-      })
-    )
   }
 
   return (
@@ -54,11 +29,11 @@ function Board() {
           Add list
         </Button>
         <div className="pt-16">
-          <CardList onToggleItem={handleToggleItem} lists={taskLists} />
+          <CardList onToggleItem={toggleTask} lists={lists} />
         </div>
       </div>
       <Dialog visible={isDialogOpen} onClose={closeDialog}>
-        <TaskListForm onSubmit={handleAddList} />
+        <TaskListForm onSubmit={handleAddListAndClose} />
       </Dialog>
     </>
   )

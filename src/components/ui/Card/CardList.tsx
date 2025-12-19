@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Emoji } from '../Emoji'
 import type { TaskListData } from '../Form/TaskListForm'
-import { CardItem } from './CarItem'
+import { CardItem } from './Card'
 
 interface CardListProps {
   lists: TaskListData[]
