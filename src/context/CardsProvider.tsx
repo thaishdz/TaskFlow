@@ -6,6 +6,7 @@ interface CardsContextValue {
   lists: TaskListData[]
   addList: (newList: TaskListData) => void
   toggleTask: (taskId: string, listId: string) => void
+  editTask: (taskId: string, listId: string, newTitle: string) => void
 }
 
 interface CardsProviderProps {
@@ -21,26 +22,39 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
     setLists([...lists, newList])
   }
 
-  const toggleTaskCompletion = (taskId: string, tasks: Task[]) => {
-    return tasks.map(task =>
-      task.id === taskId ? { ...task, completed: !task.completed } : task
-    )
-  }
-
-  const toggleTask = (taskId: string, listId: string) => {
+  const updateTaskHelper = (
+    taskId: string,
+    listId: string,
+    transformer: (task: Task) => Task
+  ) => {
     setLists((prevLists: TaskListData[]) =>
       prevLists.map(list => {
         if (list.id !== listId) return list
-
         return {
           ...list,
-          tasks: toggleTaskCompletion(taskId, list.tasks),
+          tasks: list.tasks.map(task =>
+            task.id === taskId ? transformer(task) : task
+          ),
         }
       })
     )
   }
 
-  const value = { lists, addList, toggleTask }
+  const toggleTask = (taskId: string, listId: string) => {
+    updateTaskHelper(taskId, listId, task => ({
+      ...task,
+      completed: !task.completed,
+    }))
+  }
+
+  const editTask = (taskId: string, listId: string, newTitle: string) => {
+    updateTaskHelper(taskId, listId, task => ({
+      ...task,
+      name: newTitle.trim(),
+    }))
+  }
+
+  const value = { lists, addList, toggleTask, editTask }
 
   return <CardsContext.Provider value={value}>{children}</CardsContext.Provider>
 }

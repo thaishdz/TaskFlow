@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
 
-type ButtonType = 'add' | 'edit'
+type ButtonType = 'add' | 'edit' | 'save' | 'cancel'
 
 const buttonConfig: Record<
   ButtonType,
@@ -14,6 +14,18 @@ const buttonConfig: Record<
   edit: {
     styles: 'bg-white hover:bg-yellow-200 text-black border rotate-90',
     icon: '✏️',
+    showIcon: true,
+  },
+  save: {
+    styles:
+      'bg-green-400 px-25 hover:bg-green-300 hover:ring-4 hover:ring-green-500 rounded-xl',
+    icon: '💾',
+    showIcon: true,
+  },
+  cancel: {
+    styles:
+      'bg-red-400 px-25 hover:bg-red-300 hover:ring-4 hover:ring-red-500 rounded-xl',
+    icon: '✕',
     showIcon: true,
   },
 }

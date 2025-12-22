@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Emoji } from '../Emoji'
 import type { TaskListData } from '../Form/TaskListForm'
-import { CardItem } from './Card'
+import { Card } from './Card'
 
 interface CardListProps {
   lists: TaskListData[]
@@ -51,8 +51,9 @@ export const CardList = ({ lists, onToggleItem }: CardListProps) => {
               </svg>
             </button>
             {isExpanded && (
-              <CardItem
+              <Card
                 tasks={list.tasks}
+                listId={list.id}
                 onToggleItem={taskId => onToggleItem(taskId, list.id)}
               />
             )}
