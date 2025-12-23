@@ -2,11 +2,16 @@ import { createContext, useContext } from 'react'
 import type { Task, TaskListData } from '../components/ui/Form/TaskListForm'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 
+type UpdateTaskPayload = Partial<Omit<Task, 'id'>>
+
 interface CardsContextValue {
   lists: TaskListData[]
   addList: (newList: TaskListData) => void
-  toggleTask: (taskId: string, listId: string) => void
-  editTask: (taskId: string, listId: string, newTitle: string) => void
+  updateTask: (
+    taskId: string,
+    listId: string,
+    payload: UpdateTaskPayload
+  ) => void
 }
 
 interface CardsProviderProps {
@@ -22,39 +27,29 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
     setLists([...lists, newList])
   }
 
-  const updateTaskHelper = (
+  const updateTask = (
     taskId: string,
     listId: string,
-    transformer: (task: Task) => Task
+    payload: UpdateTaskPayload
   ) => {
-    setLists((prevLists: TaskListData[]) =>
-      prevLists.map(list => {
-        if (list.id !== listId) return list
+    const currentList = [...lists]
+    const newList = currentList.map(list => {
+      if (list.id === listId) {
         return {
           ...list,
-          tasks: list.tasks.map(task =>
-            task.id === taskId ? transformer(task) : task
-          ),
+          tasks: list.tasks.map(task => ({
+            ...task,
+            ...(task.id === taskId ? payload : task),
+          })),
         }
-      })
-    )
+      }
+
+      return list
+    })
+    setLists(newList)
   }
 
-  const toggleTask = (taskId: string, listId: string) => {
-    updateTaskHelper(taskId, listId, task => ({
-      ...task,
-      completed: !task.completed,
-    }))
-  }
-
-  const editTask = (taskId: string, listId: string, newTitle: string) => {
-    updateTaskHelper(taskId, listId, task => ({
-      ...task,
-      name: newTitle.trim(),
-    }))
-  }
-
-  const value = { lists, addList, toggleTask, editTask }
+  const value = { lists, addList, updateTask }
 
   return <CardsContext.Provider value={value}>{children}</CardsContext.Provider>
 }
