@@ -1,14 +1,10 @@
 import { useState } from 'react'
 import { Emoji } from '../Emoji'
-import type { TaskListData } from '../Form/TaskListForm'
 import { Card } from './Card'
+import { useCards } from '../../../context/CardsProvider'
 
-interface CardListProps {
-  lists: TaskListData[]
-  onToggleItem: (taskId: string, listId: string) => void
-}
-
-export const CardList = ({ lists, onToggleItem }: CardListProps) => {
+export const CardList = () => {
+  const { lists } = useCards()
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const handleToggleCard = (id: string) =>
     setExpandedId(expandedId === id ? null : id)
@@ -50,13 +46,7 @@ export const CardList = ({ lists, onToggleItem }: CardListProps) => {
                 />
               </svg>
             </button>
-            {isExpanded && (
-              <Card
-                tasks={list.tasks}
-                listId={list.id}
-                onToggleItem={taskId => onToggleItem(taskId, list.id)}
-              />
-            )}
+            {isExpanded && <Card tasks={list.tasks} listId={list.id} />}
           </div>
         )
       })}

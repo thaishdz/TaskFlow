@@ -7,7 +7,7 @@ import { CardList } from './components/ui/Card/CardList'
 import { useCards } from './context/CardsProvider'
 
 function Board() {
-  const { lists, addList, toggleTask } = useCards()
+  const { addList } = useCards()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const openDialog = () => setIsDialogOpen(true)
@@ -29,7 +29,7 @@ function Board() {
           Add list
         </Button>
         <div className="pt-16">
-          <CardList onToggleItem={toggleTask} lists={lists} />
+          <CardList />
         </div>
       </div>
       <Dialog visible={isDialogOpen} onClose={closeDialog}>

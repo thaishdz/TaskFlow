@@ -7,10 +7,9 @@ import clsx from 'clsx'
 interface CardProps {
   tasks: Task[]
   listId: string
-  onToggleItem: (taskId: string) => void
 }
-export const Card = ({ tasks, listId, onToggleItem }: CardProps) => {
-  const { editTask } = useCards()
+export const Card = ({ tasks, listId }: CardProps) => {
+  const { updateTask } = useCards()
   const [isInEditMode, setIsInEditMode] = useState(false)
   const [draftTaskNames, setDraftTaskNames] = useState<Record<string, string>>(
     {}
@@ -40,7 +39,9 @@ export const Card = ({ tasks, listId, onToggleItem }: CardProps) => {
     tasks.map(originalTask => {
       const editedName = draftTaskNames[originalTask.id]
       if (editedName && editedName !== originalTask.name) {
-        editTask(originalTask.id, listId, editedName)
+        updateTask(originalTask.id, listId, {
+          name: editedName,
+        })
         setIsInEditMode(false)
       }
     })
@@ -62,7 +63,7 @@ export const Card = ({ tasks, listId, onToggleItem }: CardProps) => {
             >
               <input
                 type="text"
-                value={draftTaskNames[task.id] || task.name}
+                value={draftTaskNames[task.id]}
                 onChange={e => handleTaskValues(task.id, e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -91,7 +92,11 @@ export const Card = ({ tasks, listId, onToggleItem }: CardProps) => {
                       'italic line-through text-gray-400 opacity-60'
                   )}
                   key={task.id}
-                  onClick={() => onToggleItem(task.id)}
+                  onClick={() =>
+                    updateTask(task.id, listId, {
+                      completed: !task.completed,
+                    })
+                  }
                 >
                   {task.name}
                 </li>
