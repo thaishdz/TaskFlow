@@ -7,6 +7,7 @@ type UpdateTaskPayload = Partial<Omit<Task, 'id'>>
 interface CardsContextValue {
   lists: TaskListData[]
   addList: (newList: TaskListData) => void
+  addTask: (listId: string, newList: Task) => void
   updateTask: (
     taskId: string,
     listId: string,
@@ -27,6 +28,18 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
     setLists([...lists, newList])
   }
 
+  const addTask = (listId: string, newTask: Task) => {
+    const currentList = [...lists]
+    const updatedLists = currentList.map(list => {
+      if (list.id !== listId) return list
+      return {
+        ...list,
+        tasks: [...list.tasks, newTask],
+      }
+    })
+    setLists(updatedLists)
+  }
+
   const updateTask = (
     taskId: string,
     listId: string,
@@ -34,22 +47,19 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
   ) => {
     const currentList = [...lists]
     const newList = currentList.map(list => {
-      if (list.id === listId) {
-        return {
-          ...list,
-          tasks: list.tasks.map(task => ({
-            ...task,
-            ...(task.id === taskId ? payload : task),
-          })),
-        }
+      if (list.id !== listId) return list
+      return {
+        ...list,
+        tasks: list.tasks.map(task => {
+          if (task.id !== taskId) return task
+          return { ...task, ...payload }
+        }),
       }
-
-      return list
     })
     setLists(newList)
   }
 
-  const value = { lists, addList, updateTask }
+  const value = { lists, addList, addTask, updateTask }
 
   return <CardsContext.Provider value={value}>{children}</CardsContext.Provider>
 }

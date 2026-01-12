@@ -9,11 +9,12 @@ interface CardProps {
   listId: string
 }
 export const Card = ({ tasks, listId }: CardProps) => {
-  const { updateTask } = useCards()
+  const { addTask, updateTask } = useCards()
   const [isInEditMode, setIsInEditMode] = useState(false)
   const [draftTaskNames, setDraftTaskNames] = useState<Record<string, string>>(
     {}
   )
+  const [newTaskName, setNewTaskName] = useState<string>('')
 
   const handleEditMode = () => {
     if (!isInEditMode) {
@@ -36,15 +37,28 @@ export const Card = ({ tasks, listId }: CardProps) => {
   }
 
   const handleSave = () => {
-    tasks.map(originalTask => {
-      const editedName = draftTaskNames[originalTask.id]
-      if (editedName && editedName !== originalTask.name) {
-        updateTask(originalTask.id, listId, {
-          name: editedName,
-        })
-        setIsInEditMode(false)
+    if (tasks.length > 0) {
+      tasks.map(originalTask => {
+        const editedName = draftTaskNames[originalTask.id]
+        if (editedName && editedName !== originalTask.name) {
+          updateTask(originalTask.id, listId, {
+            name: editedName,
+          })
+        }
+      })
+    }
+
+    // Si existe una nueva tarea, añádela al listado
+    if (newTaskName.trim()) {
+      const newTask: Task = {
+        id: crypto.randomUUID(),
+        name: newTaskName,
+        completed: false,
       }
-    })
+      addTask(listId, newTask)
+      setNewTaskName('') // clear input
+    }
+    setIsInEditMode(false)
   }
 
   const handleCancel = () => {
@@ -56,19 +70,40 @@ export const Card = ({ tasks, listId }: CardProps) => {
     <>
       {isInEditMode ? (
         <div className="mt-2 rounded-xl bg-white p-4 shadow-lg">
-          {tasks.map(task => (
-            <div
-              key={task.id}
-              className="mt-2 rounded-xl bg-white p-4 shadow-lg"
-            >
-              <input
-                type="text"
-                value={draftTaskNames[task.id]}
-                onChange={e => handleTaskValues(task.id, e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          ))}
+          {tasks.length === 0 ? (
+            <input
+              type="text"
+              value={newTaskName}
+              onChange={e => setNewTaskName(e.target.value)}
+              placeholder="new task"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
+            />
+          ) : (
+            <>
+              {tasks.map(task => (
+                <div
+                  key={task.id}
+                  className="mt-2 rounded-xl bg-white p-4 shadow-lg"
+                >
+                  <input
+                    type="text"
+                    value={draftTaskNames[task.id]}
+                    onChange={e => handleTaskValues(task.id, e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              ))}
+              <div className="mt-2 rounded-xl bg-white p-4 shadow-lg">
+                <input
+                  type="text"
+                  value={newTaskName}
+                  onChange={e => setNewTaskName(e.target.value)}
+                  placeholder="new task"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
+                />
+              </div>
+            </>
+          )}
           <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4 mt-4 mx-2 sm:mx-6">
             <Button type="save" onClick={handleSave} />
             <Button type="cancel" onClick={handleCancel} />
