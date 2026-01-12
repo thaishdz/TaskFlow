@@ -1,5 +1,3 @@
-import { type ReactNode } from 'react'
-
 type ButtonType = 'add' | 'edit' | 'save' | 'cancel'
 
 const buttonConfig: Record<
@@ -30,30 +28,29 @@ const buttonConfig: Record<
   },
 }
 
-interface ButtonProps {
-  type?: ButtonType
-  children?: ReactNode // here: contenido del botón (text, icons, etc.)
-  className?: string
-  onClick: () => void // here: debe ser genérico porque aplicará a todos los botones
-}
+// Extends native button props with custom 'type' for styled variants
 
-export const Button = ({
-  type = 'add',
-  className,
-  children,
-  onClick,
-}: ButtonProps) => {
-  const config = buttonConfig[type]
+type NativeButtonProps = React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+>
+
+type ButtonProps = {
+  type?: ButtonType
+} & NativeButtonProps
+
+export const Button = (props: ButtonProps) => {
+  const { type, ...rest } = props
+  const config = buttonConfig[type || 'add']
   const baseStyles = 'px-4 py-2 cursor-pointer transition-colors'
   return (
     // className= {base | tipo | overrides}
     <button
-      type="button"
-      className={`${baseStyles} ${config.styles} ${className || ''}`.trim()}
-      onClick={onClick}
+      {...rest}
+      className={`${baseStyles} ${config.styles} ${props.className || ''}`.trim()}
     >
-      {!children && config.icon}
-      {children}
+      {!props.children && config.icon}
+      {props.children}
     </button>
   )
 }
