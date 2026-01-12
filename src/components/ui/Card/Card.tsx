@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Task } from '../Form/TaskListForm'
 import { Button } from '../Button'
 import { useCards } from '../../../context/CardsProvider'
+import clsx from 'clsx'
 
 interface CardProps {
   tasks: Task[]
@@ -84,7 +85,11 @@ export const Card = ({ tasks, listId, onToggleItem }: CardProps) => {
             ) : (
               tasks.map(task => (
                 <li
-                  className={`text-gray-800 cursor-pointer ${task.completed ? 'italic line-through text-gray-400 opacity-60' : ''}`}
+                  className={clsx(
+                    'text-gray-800 cursor-pointer',
+                    task.completed &&
+                      'italic line-through text-gray-400 opacity-60'
+                  )}
                   key={task.id}
                   onClick={() => onToggleItem(task.id)}
                 >

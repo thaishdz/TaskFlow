@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 type ButtonType = 'add' | 'edit' | 'save' | 'cancel'
 
 const buttonConfig: Record<
@@ -37,17 +39,16 @@ type NativeButtonProps = React.DetailedHTMLProps<
 
 type ButtonProps = {
   type?: ButtonType
-} & NativeButtonProps
+} & Omit<NativeButtonProps, 'type'>
 
 export const Button = (props: ButtonProps) => {
   const { type, ...rest } = props
   const config = buttonConfig[type || 'add']
   const baseStyles = 'px-4 py-2 cursor-pointer transition-colors'
   return (
-    // className= {base | tipo | overrides}
     <button
       {...rest}
-      className={`${baseStyles} ${config.styles} ${props.className || ''}`.trim()}
+      className={clsx(baseStyles, config.styles, props.className)} // Merge base styles + variant styles + user overrides
     >
       {!props.children && config.icon}
       {props.children}

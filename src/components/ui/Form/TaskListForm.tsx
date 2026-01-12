@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { type EmojiName, Emoji } from '../Emoji'
 import { Button } from '../Button'
 import { useForm } from 'react-hook-form'
+import clsx from 'clsx'
 
 export interface Task {
   id: string
@@ -87,16 +88,12 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
           }
         )}
         placeholder="e.g., My Awesome List"
-        className={`
-          w-full px-3 py-3 border rounded-lg 
-          focus:outline-none focus:ring-2 
-          transition-colors placeholder:text-gray-400
-          ${
-            errors.title
-              ? 'border-red-500 focus:ring-red-500'
-              : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
-          }
-        `}
+        className={clsx(
+          'w-full px-3 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-colors placeholder:text-gray-400',
+          errors.title
+            ? 'border-red-500 focus:ring-red-500'
+            : 'border-gray-300 focus:ring-blue-500 focus:border-transparent'
+        )}
       />
 
       {errors.title && (
@@ -112,13 +109,10 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
             type="button"
             key={name}
             onClick={() => setValue('icon', name)}
-            className={`bg-gray-200 p-4 px-5 rounded-xl cursor-pointer shadow-lg
-                                ${
-                                  selectedIcon === name
-                                    ? 'bg-yellow-500'
-                                    : 'hover:bg-yellow-500'
-                                }
-                            `}
+            className={clsx(
+              'bg-gray-200 p-4 px-5 rounded-xl cursor-pointer shadow-lg',
+              selectedIcon === name ? 'bg-yellow-500' : 'hover:bg-yellow-500'
+            )}
           >
             <div className="scale-150">
               <Emoji name={name} />
