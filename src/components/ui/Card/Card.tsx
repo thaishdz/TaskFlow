@@ -105,14 +105,14 @@ export const Card = ({ tasks, listId }: CardProps) => {
             </>
           )}
           <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4 mt-4 mx-2 sm:mx-6">
-            <Button type="save" onClick={handleSave} />
-            <Button type="cancel" onClick={handleCancel} />
+            <Button variant="save" onClick={handleSave} />
+            <Button variant="cancel" onClick={handleCancel} />
           </div>
         </div>
       ) : (
         // Read mode
         <div className="mt-2 rounded-xl bg-white p-4 shadow-lg border">
-          <Button type="edit" onClick={handleEditMode} />
+          <Button variant="edit" onClick={handleEditMode} />
           <ul>
             {tasks.length === 0 ? (
               <span>

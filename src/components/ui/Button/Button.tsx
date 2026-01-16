@@ -38,15 +38,16 @@ type NativeButtonProps = React.DetailedHTMLProps<
 >
 
 type ButtonProps = {
-  type?: ButtonType
+  variant?: ButtonType
 } & Omit<NativeButtonProps, 'type'>
 
 export const Button = (props: ButtonProps) => {
-  const { type, ...rest } = props
-  const config = buttonConfig[type || 'add']
+  const { variant, ...rest } = props
+  const config = buttonConfig[variant || 'add']
   const baseStyles = 'px-4 py-2 cursor-pointer transition-colors'
   return (
     <button
+      type="button"
       {...rest}
       className={clsx(baseStyles, config.styles, props.className)} // Merge base styles + variant styles + user overrides
     >

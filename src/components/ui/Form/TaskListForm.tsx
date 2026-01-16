@@ -138,7 +138,7 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
                         placeholder:text-gray-400
                     "
         />
-        <Button type="add" onClick={handleAddTask} />
+        <Button variant="add" onClick={handleAddTask} />
       </div>
       {tasks.length > 0 && (
         <ul className="flex flex-col ml-1">
@@ -149,7 +149,7 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
           ))}
         </ul>
       )}
-      <Button type="add" onClick={onSubmitForm}>
+      <Button variant="add" onClick={onSubmitForm}>
         Create List
       </Button>
     </form>
