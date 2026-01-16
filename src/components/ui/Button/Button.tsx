@@ -12,7 +12,7 @@ const buttonConfig: Record<
   { styles: string; icon?: React.ReactNode }
 > = {
   add: {
-    styles: 'bg-yellow-500 hover:bg-yellow-600 rounded-full',
+    styles: 'bg-yellow-500 rounded-full',
     icon: <AddIcon className="w-6 h-6 fill-white" />,
   },
   edit: {

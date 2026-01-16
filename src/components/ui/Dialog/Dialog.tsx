@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import CancelIcon from '@/assets/icons/cross_8px.svg?react'
 
 interface DialogProps {
   visible: boolean
@@ -21,7 +22,7 @@ export const Dialog = ({ visible = false, children, onClose }: DialogProps) => {
                     rounded border px-2 transition-colors text-xl z-10"
           onClick={onClose}
         >
-          ✕
+          <CancelIcon className="w-6 h-8" />
         </button>
         {children}
       </div>

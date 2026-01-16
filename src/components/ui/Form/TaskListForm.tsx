@@ -149,7 +149,7 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
           ))}
         </ul>
       )}
-      <Button variant="add" onClick={onSubmitForm}>
+      <Button variant="add" showIcon={false} onClick={onSubmitForm}>
         Create List
       </Button>
     </form>
