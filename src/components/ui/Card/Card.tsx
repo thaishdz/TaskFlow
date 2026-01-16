@@ -9,7 +9,7 @@ interface CardProps {
   listId: string
 }
 export const Card = ({ tasks, listId }: CardProps) => {
-  const { addTask, updateTask, removeTask } = useCards()
+  const { addTask, updateTask, removeTask, removeList } = useCards()
   const [isInEditMode, setIsInEditMode] = useState(false)
   const [draftTaskNames, setDraftTaskNames] = useState<Record<string, string>>(
     {}
@@ -85,13 +85,22 @@ export const Card = ({ tasks, listId }: CardProps) => {
               />
             </div>
           ) : (
-            <Button
-              variant="add"
-              onClick={handleShowNewTaskInput}
-              className="flex gap-2"
-            >
-              add task
-            </Button>
+            <div className="flex">
+              <Button
+                variant="add"
+                onClick={handleShowNewTaskInput}
+                className="flex gap-2"
+              >
+                add task
+              </Button>
+              <Button
+                variant="test"
+                className="flex items-center ml-auto"
+                onClick={() => removeList(listId)}
+              >
+                remove list
+              </Button>
+            </div>
           )}
           {tasks.length === 0 ? (
             <input

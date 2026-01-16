@@ -5,14 +5,14 @@ import BinIcon from '@/assets/icons/bin_24px.svg?react'
 import SaveIcon from '@/assets/icons/save.svg?react'
 import CancelIcon from '@/assets/icons/cross_8px.svg?react'
 
-type ButtonType = 'add' | 'edit' | 'remove' | 'save' | 'cancel'
+type ButtonType = 'add' | 'edit' | 'remove' | 'test' | 'save' | 'cancel'
 
 const buttonConfig: Record<
   ButtonType,
   { styles: string; icon?: React.ReactNode }
 > = {
   add: {
-    styles: 'bg-yellow-500 rounded-full',
+    styles: 'bg-yellow-500 hover:bg-yellow-600 rounded-full',
     icon: <AddIcon className="w-6 h-6 fill-white" />,
   },
   edit: {
@@ -26,6 +26,10 @@ const buttonConfig: Record<
   remove: {
     styles: 'bg-red-400 px-25 rounded-xl',
     icon: <BinIcon className="w-6 h-5 fill-white" />,
+  },
+  test: {
+    styles: 'text-red-500',
+    icon: <CancelIcon className="w-6 h-5 fill-red-500" />,
   },
   cancel: {
     styles: 'bg-red-400 px-10 py-5 hover:ring-4 hover:ring-red-500 rounded-xl',
