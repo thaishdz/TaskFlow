@@ -7,12 +7,14 @@ type UpdateTaskPayload = Partial<Omit<Task, 'id'>>
 interface CardsContextValue {
   lists: TaskListData[]
   addList: (newList: TaskListData) => void
+  removeList: (listId: string) => void
   addTask: (listId: string, newList: Task) => void
   updateTask: (
     taskId: string,
     listId: string,
     payload: UpdateTaskPayload
   ) => void
+  removeTask: (taskId: string, listId: string) => void
 }
 
 interface CardsProviderProps {
@@ -29,8 +31,7 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
   }
 
   const addTask = (listId: string, newTask: Task) => {
-    const currentList = [...lists]
-    const updatedLists = currentList.map(list => {
+    const updatedLists = lists.map(list => {
       if (list.id !== listId) return list
       return {
         ...list,
@@ -40,13 +41,17 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
     setLists(updatedLists)
   }
 
+  const removeList = (listId: string) => {
+    const updatedLists = lists.filter(list => listId !== list.id)
+    setLists(updatedLists)
+  }
+
   const updateTask = (
     taskId: string,
     listId: string,
     payload: UpdateTaskPayload
   ) => {
-    const currentList = [...lists]
-    const newList = currentList.map(list => {
+    const updatedLists = lists.map(list => {
       if (list.id !== listId) return list
       return {
         ...list,
@@ -56,10 +61,21 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
         }),
       }
     })
-    setLists(newList)
+    setLists(updatedLists)
   }
 
-  const value = { lists, addList, addTask, updateTask }
+  const removeTask = (taskId: string, listId: string) => {
+    const updatedLists = lists.map(list => {
+      if (list.id !== listId) return list
+      return {
+        ...list,
+        tasks: list.tasks.filter(task => task.id !== taskId),
+      }
+    })
+    setLists(updatedLists)
+  }
+
+  const value = { lists, addList, removeList, addTask, updateTask, removeTask }
 
   return <CardsContext.Provider value={value}>{children}</CardsContext.Provider>
 }
