@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Emoji } from '../Emoji'
+import { Icon } from '../Icon'
 import { Card } from './Card'
 import { useCards } from '../../../context/CardsProvider'
 
@@ -26,7 +26,7 @@ export const CardList = () => {
             >
               <div className="flex items-center">
                 <div className="flex justify-center items-center w-10 h-10 mr-4 bg-gray-50 rounded-xl p-6 shadow-lg">
-                  <Emoji name={list.icon} className="text-xl sm:text-2xl" />
+                  <Icon name={list.icon} className="text-xl sm:text-2xl" />
                 </div>
                 <h2 className="text-base sm:text-xl font-bold truncate">
                   {list.title}

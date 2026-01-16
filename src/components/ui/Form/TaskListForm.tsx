@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { type EmojiName, Emoji } from '../Emoji'
+import { type IconName, Icon } from '../Icon'
 import { Button } from '../Button'
 import { useForm } from 'react-hook-form'
 import clsx from 'clsx'
@@ -13,7 +13,7 @@ export interface Task {
 export interface TaskListData {
   id: string
   title: string
-  icon: EmojiName
+  icon: IconName
   tasks: Task[]
 }
 
@@ -56,7 +56,8 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
   }
 
   const selectedIcon = watch('icon')
-  const emojiOptions: EmojiName[] = ['travel', 'chores', 'personal']
+  // TODO: Avoid this
+  const iconOptions: IconName[] = ['travel', 'chores', 'personal', 'market']
 
   const onSubmitForm = handleSubmit(data => {
     // se lo empaqueto al padre para mostrarlos, guardarlos,... (callback props)
@@ -104,7 +105,7 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
         Icon
       </label>
       <div className="flex gap-2">
-        {emojiOptions.map(name => (
+        {iconOptions.map(name => (
           <button
             type="button"
             key={name}
@@ -115,7 +116,7 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
             )}
           >
             <div className="scale-150">
-              <Emoji name={name} />
+              <Icon name={name} />
             </div>
           </button>
         ))}
