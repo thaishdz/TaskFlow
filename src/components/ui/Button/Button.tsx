@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import AddIcon from '@/assets/icons/add.svg?react'
 import EditIcon from '@/assets/icons/edit.svg?react'
 import BinIcon from '@/assets/icons/bin_24px.svg?react'
+import SaveIcon from '@/assets/icons/save.svg?react'
 import CancelIcon from '@/assets/icons/cross_8px.svg?react'
 
 type ButtonType = 'add' | 'edit' | 'remove' | 'save' | 'cancel'
@@ -11,16 +12,16 @@ const buttonConfig: Record<
   { styles: string; icon?: React.ReactNode }
 > = {
   add: {
-    styles: 'bg-yellow-500 hover:bg-yellow-600 text-black rounded-full',
+    styles: 'bg-yellow-500 rounded-full',
     icon: <AddIcon className="w-6 h-6 fill-white" />,
   },
   edit: {
-    styles: 'bg-white text-black',
+    styles: 'bg-white rounded-full border',
     icon: <EditIcon className="w-6 h-6" />,
   },
   save: {
-    styles: 'bg-green-400 px-10 hover:ring-4 rounded-xl',
-    icon: '💾',
+    styles: 'bg-green-400 px-10 hover:ring-4 hover:ring-green-500 rounded-xl',
+    icon: <SaveIcon className="w-6 h-6" />,
   },
   remove: {
     styles: 'bg-red-400 px-25 rounded-xl',
@@ -28,7 +29,7 @@ const buttonConfig: Record<
   },
   cancel: {
     styles: 'bg-red-400 px-10 py-5 hover:ring-4 hover:ring-red-500 rounded-xl',
-    icon: <CancelIcon className="w-6 h-6 fill-white" />,
+    icon: <CancelIcon className="w-6 h-6" />,
   },
 }
 

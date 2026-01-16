@@ -24,7 +24,7 @@ function Board() {
       <div className="relative px-4 mt-8">
         <Button
           onClick={openDialog}
-          className="absolute top-0 right-4 md:right-96"
+          className="flex absolute top-0 right-4 md:right-96 gap-2"
         >
           Add list
         </Button>

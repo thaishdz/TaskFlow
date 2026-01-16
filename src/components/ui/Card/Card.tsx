@@ -131,7 +131,13 @@ export const Card = ({ tasks, listId }: CardProps) => {
       ) : (
         // Read mode
         <div className="mt-2 rounded-xl bg-white p-4 shadow-lg border">
-          <Button variant="edit" onClick={handleEditMode} />
+          <div className="flex">
+            <Button
+              variant="edit"
+              onClick={handleEditMode}
+              className="ml-auto"
+            />
+          </div>
           <ul>
             {tasks.length === 0 ? (
               <span>
