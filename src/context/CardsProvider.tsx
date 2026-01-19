@@ -8,7 +8,7 @@ interface CardsContextValue {
   lists: TaskListData[]
   addList: (newList: TaskListData) => void
   removeList: (listId: string) => void
-  addTask: (listId: string, newList: Task) => void
+  addTask: (listId: string, newTask: Task) => void
   updateTask: (
     taskId: string,
     listId: string,
