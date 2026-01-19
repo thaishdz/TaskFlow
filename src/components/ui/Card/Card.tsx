@@ -74,7 +74,23 @@ export const Card = ({ tasks, listId }: CardProps) => {
     <>
       {isInEditMode ? (
         <div className="mt-2 rounded-xl bg-white p-4 shadow-lg">
-          {showNewTaskInput ? (
+          <div className="flex">
+            <Button
+              variant="add"
+              onClick={handleShowNewTaskInput}
+              className="flex gap-2"
+            >
+              add task
+            </Button>
+            <Button
+              variant="test"
+              className="flex items-center ml-auto"
+              onClick={() => removeList(listId)}
+            >
+              remove list
+            </Button>
+          </div>
+          {showNewTaskInput && (
             <div className="mt-2 rounded-xl bg-white p-4 shadow-lg">
               <input
                 type="text"
@@ -83,23 +99,6 @@ export const Card = ({ tasks, listId }: CardProps) => {
                 placeholder="new task"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
               />
-            </div>
-          ) : (
-            <div className="flex">
-              <Button
-                variant="add"
-                onClick={handleShowNewTaskInput}
-                className="flex gap-2"
-              >
-                add task
-              </Button>
-              <Button
-                variant="test"
-                className="flex items-center ml-auto"
-                onClick={() => removeList(listId)}
-              >
-                remove list
-              </Button>
             </div>
           )}
           {tasks.length === 0 ? (
