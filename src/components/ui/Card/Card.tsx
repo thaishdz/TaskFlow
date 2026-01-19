@@ -42,6 +42,11 @@ export const Card = ({ tasks, listId }: CardProps) => {
     )
   }
 
+  const handleRemoveDraft = (draft: DraftTask) => {
+    if (!draft.isNew) removeTask(draft.id, listId)
+    setDrafts(prev => prev.filter(d => d.id !== draft.id))
+  }
+
   const handleSave = () => {
     drafts.forEach(draft => {
       if (draft.isNew && draft.name.trim()) {
@@ -85,7 +90,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
           {drafts.map(draft => (
             <div
               key={draft.id}
-              className="mt-2 rounded-xl bg-white p-4 shadow-lg"
+              className="flex items-center gap-2 mt-2 rounded-xl bg-white p-4 shadow-lg"
             >
               <input
                 type="text"
@@ -93,6 +98,11 @@ export const Card = ({ tasks, listId }: CardProps) => {
                 onChange={e => handleDraftChange(draft.id, e.target.value)}
                 placeholder="new task"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
+              />
+              <Button
+                variant="remove"
+                className="!px-2"
+                onClick={() => handleRemoveDraft(draft)}
               />
             </div>
           ))}
