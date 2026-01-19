@@ -106,7 +106,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
               />
             </div>
           ))}
-          <div className="flex flex-col sm:flex-row justify-around gap-2 sm:gap-4 mt-4 mx-2 sm:mx-6">
+          <div className="flex sm:flex-row justify-around gap-2 sm:gap-4 mt-4 mx-2 sm:mx-6">
             <Button variant="save" onClick={handleSave} />
             <Button variant="cancel" onClick={handleCancel} />
           </div>
@@ -124,13 +124,13 @@ export const Card = ({ tasks, listId }: CardProps) => {
           <ul>
             {tasks.length === 0 ? (
               <span>
-                <i>No tasks</i>
+                <i className="text-xl">No tasks</i>
               </span>
             ) : (
               tasks.map(task => (
                 <li
                   className={clsx(
-                    'text-gray-800 cursor-pointer',
+                    'text-gray-800 cursor-pointer text-xl',
                     task.completed &&
                       'italic line-through text-gray-400 opacity-60'
                   )}

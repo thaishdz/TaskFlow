@@ -20,7 +20,7 @@ const buttonConfig: Record<
     icon: <EditIcon className="w-6 h-6" />,
   },
   save: {
-    styles: 'bg-green-400 px-10 hover:ring-4 hover:ring-green-500 rounded-xl',
+    styles: 'bg-green-400 w-fit hover:ring-4 hover:ring-green-500 rounded-xl',
     icon: <SaveIcon className="w-6 h-6" />,
   },
   remove: {
@@ -32,7 +32,7 @@ const buttonConfig: Record<
     icon: <CancelIcon className="w-6 h-5 fill-red-500" />,
   },
   cancel: {
-    styles: 'bg-red-400 px-10 py-5 hover:ring-4 hover:ring-red-500 rounded-xl',
+    styles: 'bg-red-400 w-fit hover:ring-4 hover:ring-red-500 rounded-xl',
     icon: <CancelIcon className="w-6 h-6" />,
   },
 }
