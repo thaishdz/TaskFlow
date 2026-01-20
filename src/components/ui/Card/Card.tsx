@@ -101,7 +101,13 @@ export const Card = ({ tasks, listId }: CardProps) => {
 
     // 3. Reordenar
     const [movedDraft] = reordered.splice(fromIndex, 1) // 1. queremos quitarlo de donde está
-    const finalIndex = fromIndex < toIndex ? toIndex : toIndex + 1 // 2. desplazar el item hacia adelante
+    // 2. ajustar índice después de splice: vecinos inmediatos van directo, separados restan 1, hacia atrás sin cambio
+    const finalIndex =
+      fromIndex < toIndex
+        ? toIndex - fromIndex === 1
+          ? toIndex
+          : toIndex - 1
+        : toIndex
     reordered.splice(finalIndex, 0, movedDraft) // 3. insertar en nueva posición
 
     // 4. actualiza estado
@@ -124,7 +130,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
               add task
             </Button>
             <Button
-              variant="test"
+              variant="link"
               className="flex items-center ml-auto hover:underline"
               onClick={() => removeList(listId)}
             >
@@ -154,14 +160,15 @@ export const Card = ({ tasks, listId }: CardProps) => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
               />
               <Button
-                variant="remove"
+                variant="destructive"
                 className="!px-2"
                 onClick={() => handleRemoveDraft(draft)}
               />
+              <Button variant="draggable" />
             </div>
           ))}
           <div className="flex sm:flex-row justify-around mt-4 mx-2 sm:mx-6">
-            <Button variant="save" onClick={handleSave} />
+            <Button variant="success" onClick={handleSave} />
             <Button variant="cancel" onClick={handleCancel} />
           </div>
         </div>

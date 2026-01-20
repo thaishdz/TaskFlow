@@ -3,9 +3,17 @@ import AddIcon from '@/assets/icons/add.svg?react'
 import EditIcon from '@/assets/icons/edit.svg?react'
 import BinIcon from '@/assets/icons/bin_24px.svg?react'
 import SaveIcon from '@/assets/icons/save.svg?react'
+import DraggableIcon from '@/assets/icons/hamburger.svg?react'
 import CancelIcon from '@/assets/icons/cross_8px.svg?react'
 
-type ButtonType = 'add' | 'edit' | 'remove' | 'test' | 'save' | 'cancel'
+type ButtonType =
+  | 'add'
+  | 'edit'
+  | 'draggable'
+  | 'link'
+  | 'destructive'
+  | 'success'
+  | 'cancel'
 
 const buttonConfig: Record<
   ButtonType,
@@ -19,17 +27,21 @@ const buttonConfig: Record<
     styles: 'bg-white rounded-full border',
     icon: <EditIcon className="w-6 h-6" />,
   },
-  save: {
-    styles: 'w-fit bg-emerald-500 hover:bg-emerald-600 rounded-xl',
-    icon: <SaveIcon className="w-6 h-6" />,
+  draggable: {
+    styles: 'bg-white',
+    icon: <DraggableIcon className="w-6 h-6" />,
   },
-  remove: {
+  link: {
+    styles: 'text-red-500',
+    icon: <CancelIcon className="w-6 h-5 fill-red-500" />,
+  },
+  destructive: {
     styles: 'bg-red-400 hover:bg-red-600 px-25 rounded-xl',
     icon: <BinIcon className="w-6 h-5 fill-white" />,
   },
-  test: {
-    styles: 'text-red-500',
-    icon: <CancelIcon className="w-6 h-5 fill-red-500" />,
+  success: {
+    styles: 'w-fit bg-emerald-500 hover:bg-emerald-600 rounded-xl',
+    icon: <SaveIcon className="w-6 h-6" />,
   },
   cancel: {
     styles: 'w-fit bg-slate-200 hover:bg-slate-300 rounded-xl',
