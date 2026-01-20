@@ -16,7 +16,7 @@ export const CardList = () => {
         return (
           <div
             key={list.id}
-            className="w-full max-w-xl mx-auto rounded-xl bg-yellow-200 m-6 p-4 shadow-lg md:w-1/2"
+            className="w-full max-w-xl mx-auto rounded-xl bg-slate-50 hover:bg-slate-100 m-6 p-4 shadow-lg md:w-1/2"
           >
             <button
               type="button"

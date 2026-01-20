@@ -125,7 +125,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
             </Button>
             <Button
               variant="test"
-              className="flex items-center ml-auto"
+              className="flex items-center ml-auto hover:underline"
               onClick={() => removeList(listId)}
             >
               remove list
@@ -160,7 +160,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
               />
             </div>
           ))}
-          <div className="flex sm:flex-row justify-around gap-2 sm:gap-4 mt-4 mx-2 sm:mx-6">
+          <div className="flex sm:flex-row justify-around mt-4 mx-2 sm:mx-6">
             <Button variant="save" onClick={handleSave} />
             <Button variant="cancel" onClick={handleCancel} />
           </div>

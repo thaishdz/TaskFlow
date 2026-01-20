@@ -12,19 +12,19 @@ const buttonConfig: Record<
   { styles: string; icon?: React.ReactNode }
 > = {
   add: {
-    styles: 'bg-yellow-500 rounded-full',
-    icon: <AddIcon className="w-6 h-6 fill-white" />,
+    styles: 'bg-slate-900 text-white rounded-full',
+    icon: <AddIcon className="w-6 h-6" />,
   },
   edit: {
     styles: 'bg-white rounded-full border',
     icon: <EditIcon className="w-6 h-6" />,
   },
   save: {
-    styles: 'bg-green-400 w-fit hover:ring-4 hover:ring-green-500 rounded-xl',
+    styles: 'w-fit bg-emerald-500 hover:bg-emerald-600 rounded-xl',
     icon: <SaveIcon className="w-6 h-6" />,
   },
   remove: {
-    styles: 'bg-red-400 px-25 rounded-xl',
+    styles: 'bg-red-400 hover:bg-red-600 px-25 rounded-xl',
     icon: <BinIcon className="w-6 h-5 fill-white" />,
   },
   test: {
@@ -32,7 +32,7 @@ const buttonConfig: Record<
     icon: <CancelIcon className="w-6 h-5 fill-red-500" />,
   },
   cancel: {
-    styles: 'bg-red-400 w-fit hover:ring-4 hover:ring-red-500 rounded-xl',
+    styles: 'w-fit bg-slate-200 hover:bg-slate-300 rounded-xl',
     icon: <CancelIcon className="w-6 h-6" />,
   },
 }
