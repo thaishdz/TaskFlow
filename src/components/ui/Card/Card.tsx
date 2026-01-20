@@ -17,6 +17,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
   const { addTask, updateTask, removeTask, removeList } = useCards()
   const [isDraftMode, setIsDraftMode] = useState(false)
   const [drafts, setDrafts] = useState<DraftTask[]>([])
+  const [dropTargetId, setDropTargetId] = useState<string | null>(null)
 
   const enterDraftMode = () => {
     // creating temporal values from tasks
@@ -67,6 +68,49 @@ export const Card = ({ tasks, listId }: CardProps) => {
     setIsDraftMode(false)
   }
 
+  // feat: Drag & Drop using HTML5 API
+  const handleDragStart = (e: React.DragEvent, draftId: string) => {
+    e.dataTransfer.setData('text/plain', draftId)
+    e.dataTransfer.effectAllowed = 'move'
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault() // "Sí, permitir drop aquí"
+  }
+
+  const handleDragEnter = (draftId: string) => {
+    setDropTargetId(draftId) // cambia el border al nuevo draft
+  }
+
+  const handleDragEnd = () => {
+    setDropTargetId(null) // limpia al terminar
+  }
+
+  const handleDrop = (e: React.DragEvent, dropTargetId: string) => {
+    e.preventDefault() // SIN ESTO NO FUNCIONA EL DROP
+
+    // Crear copia para inmutabilidad (React way)
+    const reordered = [...drafts]
+
+    // 1. Recuperar qué draft estabas arrastrando
+    const draggedId = e.dataTransfer.getData('text/plain')
+
+    // 2. Encontrar los índices
+    const fromIndex = reordered.findIndex(item => item.id === draggedId)
+    const toIndex = reordered.findIndex(item => item.id === dropTargetId)
+
+    // 3. Reordenar
+    const [movedDraft] = reordered.splice(fromIndex, 1) // 1. queremos quitarlo de donde está
+    const finalIndex = fromIndex < toIndex ? toIndex : toIndex + 1 // 2. desplazar el item hacia adelante
+    reordered.splice(finalIndex, 0, movedDraft) // 3. insertar en nueva posición
+
+    // 4. actualiza estado
+    setDrafts(reordered)
+
+    // 5. Cleanup
+    setDropTargetId(null)
+  }
+
   return (
     <>
       {isDraftMode ? (
@@ -90,7 +134,17 @@ export const Card = ({ tasks, listId }: CardProps) => {
           {drafts.map(draft => (
             <div
               key={draft.id}
-              className="flex items-center gap-2 mt-2 rounded-xl bg-white p-4 shadow-lg"
+              draggable="true"
+              onDragStart={e => handleDragStart(e, draft.id)}
+              onDragOver={handleDragOver}
+              onDragEnter={() => handleDragEnter(draft.id)}
+              onDragEnd={handleDragEnd}
+              onDrop={e => handleDrop(e, draft.id)}
+              className={clsx(
+                'flex items-center gap-2 mt-2 rounded-xl bg-white p-4 shadow-lg',
+                draft.id === dropTargetId &&
+                  'border-dashed border-2 border-gray-500'
+              )}
             >
               <input
                 type="text"
