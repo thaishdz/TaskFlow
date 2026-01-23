@@ -2,18 +2,11 @@ import { createContext, useContext } from 'react'
 import type { Task, TaskListData } from '../components/ui/Form/TaskListForm'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 
-type UpdateTaskPayload = Partial<Omit<Task, 'id'>>
-
 interface CardsContextValue {
   lists: TaskListData[]
+  setTasks: (listId: string, newTasks: Task[]) => void
   addList: (newList: TaskListData) => void
   removeList: (listId: string) => void
-  addTask: (listId: string, newTask: Task) => void
-  updateTask: (
-    taskId: string,
-    listId: string,
-    payload: UpdateTaskPayload
-  ) => void
   removeTask: (taskId: string, listId: string) => void
 }
 
@@ -29,38 +22,16 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
   const addList = (newList: TaskListData) => {
     setLists([...lists, newList])
   }
-
-  const addTask = (listId: string, newTask: Task) => {
-    const updatedLists = lists.map(list => {
-      if (list.id !== listId) return list
-      return {
-        ...list,
-        tasks: [...list.tasks, newTask],
-      }
-    })
-    setLists(updatedLists)
+  const setTasks = (listId: string, newTasks: Task[]) => {
+    setLists(
+      lists.map(list =>
+        list.id === listId ? { ...list, tasks: newTasks } : list
+      )
+    )
   }
 
   const removeList = (listId: string) => {
     const updatedLists = lists.filter(list => listId !== list.id)
-    setLists(updatedLists)
-  }
-
-  const updateTask = (
-    taskId: string,
-    listId: string,
-    payload: UpdateTaskPayload
-  ) => {
-    const updatedLists = lists.map(list => {
-      if (list.id !== listId) return list
-      return {
-        ...list,
-        tasks: list.tasks.map(task => {
-          if (task.id !== taskId) return task
-          return { ...task, ...payload }
-        }),
-      }
-    })
     setLists(updatedLists)
   }
 
@@ -75,7 +46,13 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
     setLists(updatedLists)
   }
 
-  const value = { lists, addList, removeList, addTask, updateTask, removeTask }
+  const value = {
+    lists,
+    setTasks,
+    addList,
+    removeList,
+    removeTask,
+  }
 
   return <CardsContext.Provider value={value}>{children}</CardsContext.Provider>
 }

@@ -7,7 +7,7 @@ import clsx from 'clsx'
 export interface Task {
   id: string
   name: string
-  completed: boolean
+  isCompleted: boolean
 }
 
 export interface TaskListData {
@@ -48,7 +48,7 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
       {
         id: crypto.randomUUID(),
         name: newTaskNameInput,
-        completed: false,
+        isCompleted: false,
       },
     ])
 

@@ -8,15 +8,11 @@ interface CardProps {
   tasks: Task[]
   listId: string
 }
-interface DraftTask {
-  id: string
-  name: string
-  isNew: boolean
-}
+
 export const Card = ({ tasks, listId }: CardProps) => {
-  const { addTask, updateTask, removeTask, removeList } = useCards()
+  const { setTasks, removeList } = useCards()
   const [isDraftMode, setIsDraftMode] = useState(false)
-  const [drafts, setDrafts] = useState<DraftTask[]>([])
+  const [drafts, setDrafts] = useState<Task[]>([])
   const [draggedId, setDraggedId] = useState<string | null>(null)
   const [targetId, setTargetId] = useState<string | null>(null)
 
@@ -25,7 +21,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
     const existingDrafts = tasks.map(task => ({
       id: task.id,
       name: task.name,
-      isNew: false,
+      isCompleted: task.isCompleted,
     }))
     setDrafts(existingDrafts)
     setIsDraftMode(prev => !prev) // Cambio al modo edición
@@ -34,7 +30,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
   const handleAddTaskInput = () => {
     setDrafts(prev => [
       ...prev,
-      { id: crypto.randomUUID(), name: '', isNew: true },
+      { id: crypto.randomUUID(), name: '', isCompleted: false },
     ])
   }
 
@@ -44,24 +40,22 @@ export const Card = ({ tasks, listId }: CardProps) => {
     )
   }
 
-  const handleRemoveDraft = (draft: DraftTask) => {
-    if (!draft.isNew) removeTask(draft.id, listId)
-    setDrafts(prev => prev.filter(d => d.id !== draft.id))
-  }
-
   const handleSave = () => {
-    drafts.forEach(draft => {
-      if (draft.isNew && draft.name.trim()) {
-        addTask(listId, { id: draft.id, name: draft.name, completed: false })
-      } else {
-        const originalTask = tasks.find(task => task.id === draft.id)
-        if (originalTask && draft.name !== originalTask.name) {
-          updateTask(originalTask.id, listId, { name: draft.name })
-        }
-      }
-    })
+    const newTasks: Task[] = drafts
+      .filter(draft => draft.name.trim())
+      .map(draft => ({
+        id: draft.id,
+        name: draft.name,
+        isCompleted: draft.isCompleted,
+      }))
+
+    setTasks(listId, newTasks)
     setDrafts([])
     setIsDraftMode(false)
+  }
+
+  const handleRemoveDraft = (draftId: string) => {
+    setDrafts(prev => prev.filter(d => d.id !== draftId))
   }
 
   const handleCancel = () => {
@@ -182,7 +176,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
               <Button
                 variant="destructive"
                 className="!px-2"
-                onClick={() => handleRemoveDraft(draft)}
+                onClick={() => handleRemoveDraft(draft.id)}
               />
               <Button variant="draggable" />
             </div>
@@ -212,14 +206,19 @@ export const Card = ({ tasks, listId }: CardProps) => {
                 <li
                   className={clsx(
                     'text-gray-800 cursor-pointer text-xl',
-                    task.completed &&
+                    task.isCompleted &&
                       'italic line-through text-gray-400 opacity-60'
                   )}
                   key={task.id}
                   onClick={() =>
-                    updateTask(task.id, listId, {
-                      completed: !task.completed,
-                    })
+                    setTasks(
+                      listId,
+                      tasks.map(t =>
+                        t.id === task.id
+                          ? { ...t, isCompleted: !t.isCompleted }
+                          : t
+                      )
+                    )
                   }
                 >
                   {task.name}
