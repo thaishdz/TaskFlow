@@ -17,7 +17,8 @@ export const Card = ({ tasks, listId }: CardProps) => {
   const { addTask, updateTask, removeTask, removeList } = useCards()
   const [isDraftMode, setIsDraftMode] = useState(false)
   const [drafts, setDrafts] = useState<DraftTask[]>([])
-  const [dropTargetId, setDropTargetId] = useState<string | null>(null)
+  const [draggedId, setDraggedId] = useState<string | null>(null)
+  const [targetId, setTargetId] = useState<string | null>(null)
 
   const enterDraftMode = () => {
     // creating temporal values from tasks
@@ -68,36 +69,54 @@ export const Card = ({ tasks, listId }: CardProps) => {
     setIsDraftMode(false)
   }
 
-  // feat: Drag & Drop using HTML5 API
-  const handleDragStart = (e: React.DragEvent, draftId: string) => {
-    e.dataTransfer.setData('text/plain', draftId)
-    e.dataTransfer.effectAllowed = 'move'
+  // feat: Drag & Drop using Pointer Events
+
+  const handlePointerDown = (draggedId: string) => {
+    setDraggedId(draggedId)
   }
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault() // "Sí, permitir drop aquí"
+  const handlePointerMove = (
+    e: React.PointerEvent,
+    draggedId: string | null
+  ) => {
+    if (!draggedId && targetId) {
+      setDraggedId(draggedId)
+    }
+    // Solo procesamos si hay algo siendo arrastrado
+    if (!draggedId) return
+
+    // 1. Detectar qué elemento está bajo el cursor/dedo
+    const node = document.elementFromPoint(e.clientX, e.clientY)
+
+    if (node) {
+      // 2. Buscar el contenedor draft más cercano
+      const draftElement = node.closest('[data-draft-id]') ?? ''
+
+      if (draftElement) {
+        // 3. Extraer el ID del elemento encontrado
+        const hoveredId = draftElement.getAttribute('data-draft-id')
+
+        // 4. Solo actualizar si es diferente (evita re-renders innecesarios)
+        if (hoveredId && hoveredId !== draggedId && hoveredId !== targetId) {
+          setTargetId(hoveredId)
+        }
+      }
+    }
   }
 
-  const handleDragEnter = (draftId: string) => {
-    setDropTargetId(draftId) // cambia el border al nuevo draft
-  }
-
-  const handleDragEnd = () => {
-    setDropTargetId(null) // limpia al terminar
-  }
-
-  const handleDrop = (e: React.DragEvent, dropTargetId: string) => {
-    e.preventDefault() // SIN ESTO NO FUNCIONA EL DROP
+  const handlePointerUp = () => {
+    if (!(draggedId && targetId)) {
+      setDraggedId(null)
+      setTargetId(null)
+      return
+    }
 
     // Crear copia para inmutabilidad (React way)
     const reordered = [...drafts]
 
-    // 1. Recuperar qué draft estabas arrastrando
-    const draggedId = e.dataTransfer.getData('text/plain')
-
     // 2. Encontrar los índices
     const fromIndex = reordered.findIndex(item => item.id === draggedId)
-    const toIndex = reordered.findIndex(item => item.id === dropTargetId)
+    const toIndex = reordered.findIndex(item => item.id === targetId)
 
     // 3. Reordenar
     const [movedDraft] = reordered.splice(fromIndex, 1) // 1. queremos quitarlo de donde está
@@ -114,13 +133,18 @@ export const Card = ({ tasks, listId }: CardProps) => {
     setDrafts(reordered)
 
     // 5. Cleanup
-    setDropTargetId(null)
+    setDraggedId(null)
+    setTargetId(null)
   }
 
   return (
     <>
       {isDraftMode ? (
-        <div className="mt-2 rounded-xl bg-white p-4 shadow-lg">
+        <div
+          onPointerMove={e => handlePointerMove(e, draggedId)}
+          onPointerUp={handlePointerUp}
+          className="mt-2 rounded-xl bg-white p-4 shadow-lg"
+        >
           <div className="flex">
             <Button
               variant="add"
@@ -140,15 +164,11 @@ export const Card = ({ tasks, listId }: CardProps) => {
           {drafts.map(draft => (
             <div
               key={draft.id}
-              draggable="true"
-              onDragStart={e => handleDragStart(e, draft.id)}
-              onDragOver={handleDragOver}
-              onDragEnter={() => handleDragEnter(draft.id)}
-              onDragEnd={handleDragEnd}
-              onDrop={e => handleDrop(e, draft.id)}
+              data-draft-id={draft.id}
+              onPointerDown={() => handlePointerDown(draft.id)}
               className={clsx(
-                'flex items-center gap-2 mt-2 rounded-xl bg-white p-4 shadow-lg',
-                draft.id === dropTargetId &&
+                'flex items-center gap-2 mt-2 rounded-xl bg-white p-4 shadow-lg touch-none',
+                draft.id === targetId &&
                   'border-dashed border-2 border-gray-500'
               )}
             >
