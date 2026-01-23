@@ -7,7 +7,6 @@ interface CardsContextValue {
   setTasks: (listId: string, newTasks: Task[]) => void
   addList: (newList: TaskListData) => void
   removeList: (listId: string) => void
-  removeTask: (taskId: string, listId: string) => void
 }
 
 interface CardsProviderProps {
@@ -35,23 +34,11 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
     setLists(updatedLists)
   }
 
-  const removeTask = (taskId: string, listId: string) => {
-    const updatedLists = lists.map(list => {
-      if (list.id !== listId) return list
-      return {
-        ...list,
-        tasks: list.tasks.filter(task => task.id !== taskId),
-      }
-    })
-    setLists(updatedLists)
-  }
-
   const value = {
     lists,
     setTasks,
     addList,
     removeList,
-    removeTask,
   }
 
   return <CardsContext.Provider value={value}>{children}</CardsContext.Provider>
