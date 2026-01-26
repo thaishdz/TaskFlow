@@ -15,25 +15,30 @@ interface CardsProviderProps {
 
 const CardsContext = createContext<CardsContextValue | undefined>(undefined)
 
+const ONBOARDING_LIST: TaskListData[] = [
+  {
+    id: 'onboarding-id',
+    title: 'My Tasks',
+    icon: 'personal',
+    tasks: [
+      { id: 'task-1', name: 'Click to complete a task', isCompleted: false },
+      {
+        id: 'task-2',
+        name: 'Edit mode ✏️ to manage your tasks',
+        isCompleted: false,
+      },
+    ],
+  },
+]
+
 export const CardsProvider = ({ children }: CardsProviderProps) => {
-  const ONBOARDING_LIST: TaskListData[] = [
-    {
-      id: 'example-1',
-      title: 'My Tasks',
-      icon: 'personal',
-      tasks: [
-        { id: 'task-1', name: 'Click to complete a task', isCompleted: false },
-        {
-          id: 'task-2',
-          name: 'Edit mode ✏️ to manage your tasks',
-          isCompleted: false,
-        },
-      ],
-    },
-  ]
+  const [showOnboarding, setShowOnboarding] = useLocalStorage(
+    'show-onboarding',
+    true
+  )
   const [lists, setLists] = useLocalStorage<TaskListData[]>(
     'my-task-lists',
-    ONBOARDING_LIST
+    showOnboarding ? ONBOARDING_LIST : []
   )
 
   const addList = (newList: TaskListData) => {
@@ -50,6 +55,7 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
   const removeList = (listId: string) => {
     const updatedLists = lists.filter(list => listId !== list.id)
     setLists(updatedLists)
+    if (listId === 'onboarding-id') setShowOnboarding(false)
   }
 
   const value = {
