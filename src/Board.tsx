@@ -26,7 +26,7 @@ function Board() {
         <Button
           onClick={openDialog}
           className={clsx(
-            'flex fixed px-5 py-5 shadow-xl scale-130',
+            'flex fixed px-5 py-5 shadow-xl scale-100',
 
             'top-35 right-4',
 
