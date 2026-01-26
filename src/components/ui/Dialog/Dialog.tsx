@@ -14,7 +14,7 @@ export const Dialog = ({ visible = false, children, onClose }: DialogProps) => {
       onClick={onClose}
     >
       <div
-        className="flex bg-white rounded-lg shadow-xl p-4 md:p-6 w-96 max-w-md relative border"
+        className="flex bg-white rounded-lg shadow-xl p-4 md:p-6 w-96 max-w-md relative"
         onClick={event => event.stopPropagation()} // here: evita que al hacer click en el formulario se cierre
       >
         <button
