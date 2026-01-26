@@ -16,7 +16,25 @@ interface CardsProviderProps {
 const CardsContext = createContext<CardsContextValue | undefined>(undefined)
 
 export const CardsProvider = ({ children }: CardsProviderProps) => {
-  const [lists, setLists] = useLocalStorage<TaskListData[]>('my-task-lists', [])
+  const ONBOARDING_LIST: TaskListData[] = [
+    {
+      id: 'example-1',
+      title: 'My Tasks',
+      icon: 'personal',
+      tasks: [
+        { id: 'task-1', name: 'Click to complete a task', isCompleted: false },
+        {
+          id: 'task-2',
+          name: 'Edit mode ✏️ to manage your tasks',
+          isCompleted: false,
+        },
+      ],
+    },
+  ]
+  const [lists, setLists] = useLocalStorage<TaskListData[]>(
+    'my-task-lists',
+    ONBOARDING_LIST
+  )
 
   const addList = (newList: TaskListData) => {
     setLists([...lists, newList])
