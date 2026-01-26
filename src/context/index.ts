@@ -1,2 +1,2 @@
-import { CardProvider } from './CardsProvider'
-export { CardProvider }
+import { CardsProvider } from './CardsProvider'
+export { CardsProvider }
