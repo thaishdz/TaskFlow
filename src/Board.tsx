@@ -5,6 +5,7 @@ import { TaskListForm } from './components/ui/Form'
 import type { TaskListData } from './components/ui/Form/TaskListForm'
 import { CardList } from './components/ui/Card/CardList'
 import { useCards } from './context/CardsProvider'
+import clsx from 'clsx'
 
 function Board() {
   const { addList } = useCards()
@@ -24,10 +25,14 @@ function Board() {
       <div className="relative px-4 mt-8">
         <Button
           onClick={openDialog}
-          className="flex absolute top-0 right-4 md:right-96 gap-2"
-        >
-          Add list
-        </Button>
+          className={clsx(
+            'flex fixed px-5 py-5 shadow-xl scale-130',
+
+            'top-35 right-4',
+
+            'md:top-auto md:bottom-25 md:right-15'
+          )}
+        ></Button>
         <div className="pt-16">
           <CardList />
         </div>
