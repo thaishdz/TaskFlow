@@ -1,6 +1,8 @@
-# My Task Board
+# Taskflow
 
-Aplicación de gestión de tareas construida con React, TypeScript y Tailwind CSS v4. Permite crear listas de tareas personalizadas con iconos y organizar tus tareas de forma visual.
+Aplicación de gestión de tareas construida con React, TypeScript y Tailwind CSS v4. Permite crear listas de tareas personalizadas con iconos y organizar tareas de forma visual.
+
+![taskflowUI](./src/assets/taskflowUI.png)
 
 ## Requisitos Previos
 
