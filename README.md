@@ -2,7 +2,7 @@
 
 Aplicación de gestión de tareas construida con React, TypeScript y Tailwind CSS v4. Permite crear listas de tareas personalizadas con iconos y organizar tareas de forma visual.
 
-![taskflowUI](./src/assets/taskflowUI.png)
+<img src="./src/assets/taskflowUI.png" alt="Taskflow UI" width="400" />
 
 ## Requisitos Previos
 
