@@ -150,7 +150,12 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
           ))}
         </ul>
       )}
-      <Button variant="add" showIcon={false} onClick={onSubmitForm}>
+      <Button
+        className="py-4"
+        variant="add"
+        showIcon={false}
+        onClick={onSubmitForm}
+      >
         Create List
       </Button>
     </form>

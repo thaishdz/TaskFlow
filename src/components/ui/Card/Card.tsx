@@ -166,9 +166,9 @@ export const Card = ({ tasks, listId }: CardProps) => {
               className={clsx(
                 'flex items-center gap-2 mt-2 rounded-xl bg-white p-4 shadow-lg touch-none transition-all duration-150',
                 draft.id === draggedId &&
-                  'opacity-50 scale-105 shadow-2xl ring-2 ring-blue-400 z-10',
+                  'opacity-50 scale-105 shadow-2xl ring-2 ring-orange-400 z-10',
                 draft.id === targetId &&
-                  'border-dashed border-2 border-blue-500 bg-blue-50'
+                  'border-dashed border-2 border-orange-500 bg-orange-50'
               )}
             >
               <input
