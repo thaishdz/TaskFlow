@@ -137,7 +137,10 @@ export const Card = ({ tasks, listId }: CardProps) => {
         <div
           onPointerMove={e => handlePointerMove(e, draggedId)}
           onPointerUp={handlePointerUp}
-          className="mt-2 rounded-xl bg-white p-4 shadow-lg"
+          className={clsx(
+            'mt-2 rounded-xl bg-white p-4 shadow-lg',
+            draggedId && '[&_*]:cursor-grabbing cursor-grabbing'
+          )}
         >
           <div className="flex">
             <Button
@@ -161,9 +164,11 @@ export const Card = ({ tasks, listId }: CardProps) => {
               data-draft-id={draft.id}
               onPointerDown={() => handlePointerDown(draft.id)}
               className={clsx(
-                'flex items-center gap-2 mt-2 rounded-xl bg-white p-4 shadow-lg touch-none',
+                'flex items-center gap-2 mt-2 rounded-xl bg-white p-4 shadow-lg touch-none transition-all duration-150',
+                draft.id === draggedId &&
+                  'opacity-50 scale-105 shadow-2xl ring-2 ring-blue-400 z-10',
                 draft.id === targetId &&
-                  'border-dashed border-2 border-gray-500'
+                  'border-dashed border-2 border-blue-500 bg-blue-50'
               )}
             >
               <input

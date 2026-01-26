@@ -4,9 +4,9 @@ import { useLocalStorage } from '../hooks/useLocalStorage'
 
 interface CardsContextValue {
   lists: TaskListData[]
-  setTasks: (listId: string, newTasks: Task[]) => void
   addList: (newList: TaskListData) => void
   removeList: (listId: string) => void
+  setTasks: (listId: string, newTasks: Task[]) => void
 }
 
 interface CardsProviderProps {
@@ -36,9 +36,9 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
 
   const value = {
     lists,
-    setTasks,
     addList,
     removeList,
+    setTasks,
   }
 
   return <CardsContext.Provider value={value}>{children}</CardsContext.Provider>

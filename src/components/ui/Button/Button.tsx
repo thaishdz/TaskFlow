@@ -28,7 +28,7 @@ const buttonConfig: Record<
     icon: <EditIcon className="w-6 h-6" />,
   },
   draggable: {
-    styles: 'bg-white',
+    styles: 'bg-white cursor-grab active:cursor-grabbing',
     icon: <DraggableIcon className="w-6 h-6" />,
   },
   link: {
