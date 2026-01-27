@@ -5,6 +5,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage'
 interface CardsContextValue {
   lists: TaskListData[]
   addList: (newList: TaskListData) => void
+  editList: (listId: string, newTitle: string) => void
   removeList: (listId: string) => void
   setTasks: (listId: string, newTasks: Task[]) => void
 }
@@ -44,23 +45,35 @@ export const CardsProvider = ({ children }: CardsProviderProps) => {
   const addList = (newList: TaskListData) => {
     setLists([...lists, newList])
   }
+
   const setTasks = (listId: string, newTasks: Task[]) => {
     setLists(
-      lists.map(list =>
-        list.id === listId ? { ...list, tasks: newTasks } : list
+      (
+        prevLists // ← prevLists en vez de lists
+      ) =>
+        prevLists.map(list =>
+          list.id === listId ? { ...list, tasks: newTasks } : list
+        )
+    )
+  }
+
+  const editList = (listId: string, newTitle: string) => {
+    setLists(prevLists =>
+      prevLists.map(list =>
+        list.id === listId ? { ...list, title: newTitle } : list
       )
     )
   }
 
   const removeList = (listId: string) => {
-    const updatedLists = lists.filter(list => listId !== list.id)
-    setLists(updatedLists)
+    setLists(prevLists => prevLists.filter(list => listId !== list.id))
     if (listId === 'onboarding-id') setShowOnboarding(false)
   }
 
   const value = {
     lists,
     addList,
+    editList,
     removeList,
     setTasks,
   }

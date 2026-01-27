@@ -7,11 +7,26 @@ import clsx from 'clsx'
 interface CardProps {
   tasks: Task[]
   listId: string
+  isDraftMode: boolean
+  onEnterDraft: () => void
+  onSave: () => void
+  onCancel: () => void
 }
-
-export const Card = ({ tasks, listId }: CardProps) => {
+/* 
+  Cada componente maneja su propio "draft" y se sincronizan a través de los callbacks 
+  - Card maneja los de las tasks
+  - CardList solo el del titulo de la lista
+  Cada uno inicializa/limpia su propio estado, sincronizados por los callbacks. 
+*/
+export const Card = ({
+  tasks,
+  listId,
+  isDraftMode,
+  onEnterDraft,
+  onSave,
+  onCancel,
+}: CardProps) => {
   const { setTasks, removeList } = useCards()
-  const [isDraftMode, setIsDraftMode] = useState(false)
   const [drafts, setDrafts] = useState<Task[]>([])
   const [draggedId, setDraggedId] = useState<string | null>(null)
   const [targetId, setTargetId] = useState<string | null>(null)
@@ -24,7 +39,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
       isCompleted: task.isCompleted,
     }))
     setDrafts(existingDrafts)
-    setIsDraftMode(prev => !prev) // Cambio al modo edición
+    onEnterDraft() // Avisa al padre para que active modo edición y copie el título
   }
 
   const handleAddTaskInput = () => {
@@ -51,7 +66,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
 
     setTasks(listId, newTasks)
     setDrafts([])
-    setIsDraftMode(false)
+    onSave() // Avisa al padre para que guarde el título y salga del modo edición
   }
 
   const handleRemoveDraft = (draftId: string) => {
@@ -60,7 +75,7 @@ export const Card = ({ tasks, listId }: CardProps) => {
 
   const handleCancel = () => {
     setDrafts([])
-    setIsDraftMode(false)
+    onCancel()
   }
 
   // feat: Drag & Drop using Pointer Events
