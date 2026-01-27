@@ -162,7 +162,6 @@ export const Card = ({ tasks, listId }: CardProps) => {
             <div
               key={draft.id}
               data-draft-id={draft.id}
-              onPointerDown={() => handlePointerDown(draft.id)}
               className={clsx(
                 'flex items-center gap-2 mt-2 rounded-xl bg-white p-4 shadow-lg touch-none transition-all duration-150',
                 draft.id === draggedId &&
@@ -183,7 +182,10 @@ export const Card = ({ tasks, listId }: CardProps) => {
                 className="!px-2"
                 onClick={() => handleRemoveDraft(draft.id)}
               />
-              <Button variant="draggable" />
+              <Button
+                variant="draggable"
+                onPointerDown={() => handlePointerDown(draft.id)}
+              />
             </div>
           ))}
           <div className="flex sm:flex-row justify-around mt-4 mx-2 sm:mx-6">
