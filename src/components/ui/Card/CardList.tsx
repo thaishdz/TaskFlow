@@ -47,6 +47,7 @@ export const CardList = () => {
                   <input
                     autoFocus
                     type="text"
+                    maxLength={25}
                     value={draftTitle}
                     onChange={e => setDraftTitle(e.target.value)}
                     onClick={e => e.stopPropagation()}

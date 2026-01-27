@@ -187,6 +187,7 @@ export const Card = ({
             >
               <input
                 type="text"
+                maxLength={50}
                 value={draft.name}
                 onChange={e => handleDraftChange(draft.id, e.target.value)}
                 placeholder="new task"
@@ -218,7 +219,7 @@ export const Card = ({
               className="ml-auto"
             />
           </div>
-          <ul>
+          <ul className="space-y-4">
             {tasks.length === 0 ? (
               <span>
                 <i className="text-xl">No tasks</i>
