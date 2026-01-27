@@ -9,8 +9,10 @@ export const CardList = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [draftModeId, setDraftModeId] = useState<string | null>(null)
   const [draftTitle, setDraftTitle] = useState('')
-  const handleToggleCard = (id: string) =>
+  const handleToggleCard = (id: string) => {
+    if (draftModeId === id) return // No cerrar si está editando
     setExpandedId(expandedId === id ? null : id)
+  }
 
   const onEnterDraft = (list: TaskListData) => {
     setDraftModeId(list.id)
@@ -47,10 +49,11 @@ export const CardList = () => {
                   <input
                     autoFocus
                     type="text"
-                    maxLength={25}
+                    maxLength={50}
                     value={draftTitle}
                     onChange={e => setDraftTitle(e.target.value)}
                     onClick={e => e.stopPropagation()}
+                    onKeyDown={e => e.stopPropagation()}
                     className="w-full bg-white px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
                   />
                 ) : (
