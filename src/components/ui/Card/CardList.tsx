@@ -35,13 +35,8 @@ export const CardList = () => {
             key={list.id}
             className="w-full max-w-xl mx-auto rounded-xl bg-slate-50 hover:bg-slate-100 m-6 p-4 shadow-lg md:w-1/2"
           >
-            <button
-              type="button"
-              onClick={() => handleToggleCard(list.id)}
-              className="flex w-full items-center justify-between cursor-pointer"
-              aria-expanded={isExpanded}
-            >
-              <div className="flex items-center">
+            <div className="flex w-full items-center justify-between">
+              <div className="flex items-center flex-1">
                 <div className="flex justify-center items-center w-10 h-10 mr-4 bg-gray-50 rounded-xl p-6 shadow-lg">
                   <Icon name={list.icon} className="text-xl sm:text-2xl" />
                 </div>
@@ -52,8 +47,6 @@ export const CardList = () => {
                     maxLength={50}
                     value={draftTitle}
                     onChange={e => setDraftTitle(e.target.value)}
-                    onClick={e => e.stopPropagation()}
-                    onKeyDown={e => e.stopPropagation()}
                     className="w-full bg-white px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
                   />
                 ) : (
@@ -62,20 +55,28 @@ export const CardList = () => {
                   </h2>
                 )}
               </div>
-              <svg
-                className={`w-6 h-6 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+              <button
+                type="button"
+                onClick={() => handleToggleCard(list.id)}
+                className="cursor-pointer p-2"
+                aria-expanded={isExpanded}
+                aria-label={isExpanded ? 'Collapse list' : 'Expand list'}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
+                <svg
+                  className={`w-6 h-6 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+            </div>
             {isExpanded && (
               <Card
                 tasks={list.tasks}
