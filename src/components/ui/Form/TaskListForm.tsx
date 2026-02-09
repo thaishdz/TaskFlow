@@ -160,7 +160,7 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
         </ul>
       )}
       <Button
-        className="py-4"
+        className="w-1/2 self-center mt-2 py-2"
         variant="add"
         showIcon={false}
         onClick={onSubmitForm}
