@@ -69,6 +69,10 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
     })
   })
 
+  const removeTask = (taskId: string) => {
+    setTasks(prevTasks => prevTasks.filter(prevTask => taskId !== prevTask.id))
+  }
+
   return (
     <form className="flex flex-col gap-6 w-full">
       <h2 className="text-xl text-bold">Add list</h2>
@@ -142,10 +146,15 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
         <Button variant="add" onClick={handleAddTask} />
       </div>
       {tasks.length > 0 && (
-        <ul className="flex flex-col ml-1">
+        <ul className="flex flex-col gap-4 ml-1 mt-5">
           {tasks.map(task => (
-            <li key={task.id} className="text-gray-700">
+            <li key={task.id} className="flex justify-between text-gray-700">
               <i>{task.name}</i>
+              <Button
+                variant="destructive"
+                className="!px-3 !py-0 ml-2"
+                onClick={() => removeTask(task.id)}
+              />
             </li>
           ))}
         </ul>
