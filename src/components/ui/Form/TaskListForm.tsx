@@ -57,7 +57,14 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
 
   const selectedIcon = watch('icon')
   // TODO: Avoid this
-  const iconOptions: IconName[] = ['travel', 'chores', 'personal', 'market']
+  const iconOptions: IconName[] = [
+    'reminder',
+    'market',
+    'chores',
+    'personal',
+    'travel',
+    'random',
+  ]
 
   const onSubmitForm = handleSubmit(data => {
     // se lo empaqueto al padre para mostrarlos, guardarlos,... (callback props)
@@ -108,7 +115,7 @@ export const TaskListForm = ({ onSubmit }: TaskListFormProps) => {
       <label className="text-sm font-medium text-gray-500" htmlFor="icon">
         Icon
       </label>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {iconOptions.map(name => (
           <button
             type="button"
